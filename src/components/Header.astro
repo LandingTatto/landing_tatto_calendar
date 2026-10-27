@@ -1,0 +1,154 @@
+---
+const navLinks = [
+    { label: "Inicio", href: "/#inicio" },
+    { label: "Galería", href: "/#galeria" },
+    { label: "Calidad", href: "/#calidad" },
+];
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-border/80 bg-background/90 backdrop-blur-md">
+    <nav
+        aria-label="Navegación principal"
+        class="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-6"
+    >
+        <a
+            href="/#inicio"
+            class="group shrink-0 rounded-sm focus-visible:outline-offset-4"
+            aria-label="Daniel Body Modification, inicio"
+        >
+            <span class="block text-[1.35rem] font-semibold leading-none tracking-[0.2em] text-foreground transition-colors duration-200 group-hover:text-accent-hover">
+                DANIEL
+            </span>
+
+            <span class="mt-1 block text-[9px] font-medium leading-none tracking-[0.28em] text-muted transition-colors duration-200 group-hover:text-foreground">
+                BODY MODIFICATION
+            </span>
+        </a>
+
+        <ul class="hidden items-center gap-8 md:flex">
+            {
+                navLinks.map((link) => (
+                    <li>
+                        <a
+                            href={link.href}
+                            class="group relative rounded-sm py-3 text-sm text-muted transition-colors duration-200 hover:text-foreground focus-visible:outline-offset-4"
+                        >
+                            {link.label}
+                            <span class="absolute inset-x-0 bottom-1 h-px origin-left scale-x-0 bg-accent transition-transform duration-200 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <div class="flex items-center gap-3">
+            <a
+                href="/#agendar"
+                class="hidden min-h-11 items-center rounded-xl bg-accent px-3 text-xs font-medium text-foreground transition-colors duration-200 hover:bg-accent-hover focus-visible:outline-offset-4 min-[381px]:inline-flex md:hidden"
+            >
+                Agendar
+            </a>
+
+            <a
+                href="/#agendar"
+                class="hidden min-h-11 items-center rounded-sm bg-accent px-5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-accent-hover focus-visible:outline-offset-4 md:inline-flex"
+            >
+                Agendar cita
+            </a>
+
+            <details id="mobile-menu" class="relative md:hidden">
+                <summary
+                    class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-border text-muted transition-colors duration-200 hover:border-accent hover:text-foreground focus-visible:outline-offset-4 [&::-webkit-details-marker]:hidden"
+                    aria-label="Abrir menú"
+                    aria-controls="mobile-navigation"
+                    aria-expanded="false"
+                >
+                    <span class="sr-only">Abrir menú</span>
+                    <span class="menu-icon flex w-5 flex-col" aria-hidden="true">
+                        <span class="menu-icon__line h-px w-full bg-current"></span>
+                        <span class="menu-icon__line h-px w-full bg-current"></span>
+                        <span class="menu-icon__line h-px w-full bg-current"></span>
+                    </span>
+                </summary>
+
+                <div id="mobile-navigation" class="fixed inset-x-0 top-20 rounded-b-2xl border-b border-border bg-surface/98 px-5 py-4 shadow-2xl shadow-black/30">
+                    <ul class="mx-auto flex max-w-7xl flex-col">
+                        {
+                            navLinks.map((link) => (
+                                <li>
+                                    <a
+                                        href={link.href}
+                                        class="block rounded-lg px-4 py-3 text-base text-muted transition-colors duration-200 hover:bg-surface-hover hover:text-foreground focus-visible:outline-offset-[-2px]"
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))
+                        }
+                    </ul>
+
+                </div>
+            </details>
+        </div>
+    </nav>
+</header>
+
+<script>
+    const mobileMenu = document.querySelector<HTMLDetailsElement>("#mobile-menu");
+
+    if (mobileMenu) {
+        const toggle = mobileMenu.querySelector<HTMLElement>("summary");
+        const links = mobileMenu.querySelectorAll<HTMLAnchorElement>("a");
+
+        const syncMenuState = () => {
+            const isOpen = mobileMenu.open;
+
+            mobileMenu.dataset.open = String(isOpen);
+            toggle?.setAttribute("aria-expanded", String(isOpen));
+            toggle?.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+
+            const label = toggle?.querySelector(".sr-only");
+            if (label) label.textContent = isOpen ? "Cerrar menú" : "Abrir menú";
+        };
+
+        mobileMenu.addEventListener("toggle", syncMenuState);
+
+        links.forEach((link) => {
+            link.addEventListener("click", () => {
+                mobileMenu.open = false;
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (mobileMenu.open && !mobileMenu.contains(event.target as Node)) {
+                mobileMenu.open = false;
+            }
+        });
+
+        syncMenuState();
+    }
+</script>
+
+<style>
+    #mobile-menu[data-open="true"] .menu-icon__line:first-child {
+        transform: rotate(45deg);
+    }
+
+    #mobile-menu[data-open="true"] .menu-icon__line:nth-child(2) {
+        opacity: 0;
+    }
+
+    #mobile-menu[data-open="true"] .menu-icon__line:last-child {
+        transform: rotate(-45deg);
+    }
+
+    .menu-icon__line {
+        transition: transform 200ms ease, opacity 200ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .menu-icon__line {
+            transition: none;
+        }
+    }
+</style>
