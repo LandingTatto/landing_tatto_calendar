@@ -1,0 +1,55 @@
+---
+import { Image } from "astro:assets";
+import heroFace from "../assets/hero/hero-face.png";
+import heroEar from "../assets/hero/hero-ear.png";
+import heroJewelry from "../assets/hero/hero-jewelry.png";
+---
+
+<section id="inicio" aria-labelledby="hero-title" class="hero-section mx-auto grid max-w-[96rem] gap-12 px-4 pb-10 pt-10 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-20 lg:pb-14 lg:pt-14">
+	<div class="hero-copy">
+		<div class="mb-7 flex items-center gap-4">
+			<span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">Body modification / Santiago</span>
+			<span class="h-px w-14 bg-accent/70" aria-hidden="true"></span>
+		</div>
+
+		<h1 id="hero-title" class="max-w-2xl font-display text-6xl font-semibold leading-[0.91] tracking-tight text-foreground sm:text-7xl lg:text-[7.3rem]">Tu cuerpo,<br /><em>tu pieza.</em></h1>
+		<p class="mt-8 max-w-md text-base leading-relaxed text-muted sm:text-lg">Piercings y modificaciones corporales trabajadas con precisión, identidad y materiales de primera calidad.</p>
+	</div>
+
+	<div class="hero-visual" aria-label="Selección de trabajos de body modification">
+		<div class="hero-visual__main">
+			<Image src={heroFace} alt="Detalle editorial de piercing corporal" class="h-full w-full object-cover" />
+			<span class="hero-visual__label">01 / DETAIL</span>
+		</div>
+		<div class="hero-visual__small hero-visual__small--top">
+			<Image src={heroEar} alt="Detalle de piercings en la oreja" class="h-full w-full object-cover" />
+		</div>
+		<div class="hero-visual__small hero-visual__small--bottom">
+			<Image src={heroJewelry} alt="Selección de joyería corporal" class="h-full w-full object-cover" />
+		</div>
+		<span class="hero-visual__side-label">PRECISION / FORM / MATERIAL</span>
+	</div>
+</section>
+
+<style>
+	.hero-section { position: relative; }
+	.hero-copy { position: relative; z-index: 2; }
+	.hero-copy em { color: var(--color-accent-hover); font-style: normal; }
+	.hero-visual { position: relative; min-height: 31rem; }
+	.hero-visual::before { position: absolute; top: 2rem; right: 0; bottom: 0; left: 6%; border: 1px solid rgba(56, 56, 60, 0.85); border-radius: 1rem; content: ""; }
+	.hero-visual::after { position: absolute; top: 2rem; bottom: 0; left: 6%; width: 1px; background: linear-gradient(180deg, transparent, rgba(158, 108, 89, 0.55), transparent); content: ""; }
+	.hero-visual__main { position: absolute; top: 0; right: 8%; z-index: 1; width: 71%; height: 29rem; overflow: hidden; border: 1px solid rgba(158, 108, 89, 0.24); border-radius: 0.9rem; background: var(--color-surface); box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.22); }
+	.hero-visual__main img { animation: hero-drift 12s ease-in-out infinite alternate; }
+	.hero-visual__main::after, .hero-visual__small::after { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(17, 17, 19, 0.72)); content: ""; pointer-events: none; }
+	.hero-visual__label { position: absolute; right: 1.2rem; bottom: 1rem; z-index: 1; color: rgba(243, 238, 231, 0.75); font-size: 0.62rem; letter-spacing: 0.2em; }
+	.hero-visual__small { position: absolute; z-index: 2; width: 29%; height: 10.5rem; overflow: hidden; border: 5px solid var(--color-background); border-radius: 0.75rem; background: var(--color-surface); box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.32); }
+	.hero-visual__small img { transition: transform 800ms ease; }
+	.hero-visual__small:hover img { transform: scale(1.06); }
+	.hero-visual__small--top { top: 4rem; left: 0; }
+	.hero-visual__small--bottom { right: 0; bottom: 0; }
+	.hero-visual__side-label { position: absolute; top: 13rem; left: -1.1rem; transform: rotate(-90deg); color: rgba(169, 169, 165, 0.55); font-size: 0.58rem; letter-spacing: 0.22em; white-space: nowrap; }
+	@keyframes hero-drift { from { transform: scale(1.03) translate3d(-1%, 0, 0); } to { transform: scale(1.1) translate3d(1%, -1%, 0); } }
+	@media (max-width: 1023px) { .hero-visual { min-height: 27rem; } .hero-visual__main { height: 25rem; } }
+	@media (max-width: 640px) { .hero-section { gap: 3rem; padding-top: 3rem; } .hero-visual { min-height: 23rem; } .hero-visual__main { right: 5%; width: 79%; height: 20rem; } .hero-visual__small { width: 35%; height: 8rem; border-width: 4px; } .hero-visual__small--top { top: 1.2rem; } .hero-visual__small--bottom { bottom: 0; } .hero-visual__side-label { display: none; } }
+	@media (prefers-reduced-motion: reduce) { .hero-visual__main img { animation: none; } .hero-visual__small img { transition: none; } }
+</style>

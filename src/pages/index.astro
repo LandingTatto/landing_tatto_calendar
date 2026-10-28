@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
 import Gallery from "../components/Gallery.astro";
 import Materials from "../components/Materials.astro";
 ---
@@ -8,7 +9,9 @@ import Materials from "../components/Materials.astro";
 <Layout title="Daniel | Body Modification">
 	<Header />
 
-	<main id="inicio" class="mx-auto max-w-7xl px-6 py-20">
+	<main class="mx-auto max-w-7xl px-6">
+		<Hero />
+		<div class="section-divider" aria-hidden="true"></div>
 		<Materials />
 		<div class="section-divider" aria-hidden="true"></div>
 		<Gallery />
