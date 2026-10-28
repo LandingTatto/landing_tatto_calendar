@@ -93,8 +93,13 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
     <section
         id="galeria"
         aria-labelledby="gallery-title"
-        class="mx-auto max-w-[96rem] px-4 py-20 sm:px-6"
+		class="mx-auto max-w-[96rem] px-4 py-24 sm:px-6 lg:py-32"
     >
+	<div class="mb-6 flex items-center gap-4">
+		<span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">03 / Galería</span>
+		<span class="h-px w-16 bg-accent/70" aria-hidden="true"></span>
+	</div>
+
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
         <h2
             id="gallery-title"
