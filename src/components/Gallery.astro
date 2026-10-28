@@ -1,0 +1,630 @@
+---
+import { Image } from "astro:assets";
+
+import earPiercing from "../assets/gallery/ear-piercing.png";
+import bodyJewelry from "../assets/gallery/body-jewelry.png";
+import nosePiercing from "../assets/gallery/nose-piercing.png";
+import industrialPiercing from "../assets/gallery/industrial-piercing.png";
+import eyebrowPiercing from "../assets/gallery/eyebrow-piercing.png";
+import collarbonePiercing from "../assets/gallery/collarbone-piercing.png";
+
+const galleryItems = [
+    {
+        title: "Perforación de oreja",
+        category: "Perforaciones",
+        image: earPiercing,
+    },
+    {
+        title: "Joyería corporal",
+        category: "Joyería",
+        image: bodyJewelry,
+    },
+    {
+        title: "Modificación corporal",
+        category: "Modificaciones",
+        image: nosePiercing,
+    },
+];
+
+const loopedGalleryItems = [...galleryItems, ...galleryItems];
+
+const secondGalleryItems = [
+    {
+        title: "Perforación industrial",
+        category: "Perforaciones",
+        image: industrialPiercing,
+    },
+    {
+        title: "Perforación de ceja",
+        category: "Perforaciones",
+        image: eyebrowPiercing,
+    },
+    {
+        title: "Joyería de clavícula",
+        category: "Modificaciones",
+        image: collarbonePiercing,
+    },
+];
+
+const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
+---
+
+<div class="relative">
+    <div
+        class="gallery-side-panel gallery-side-panel-left"
+        aria-hidden="true"
+    >
+        <span class="gallery-side-monogram">D</span>
+        <span class="gallery-side-index">01 / 02</span>
+    </div>
+
+    <div
+        class="gallery-side-panel gallery-side-panel-right"
+        aria-hidden="true"
+    >
+        <span class="gallery-side-monogram">D</span>
+        <span class="gallery-side-index">02 / 02</span>
+    </div>
+
+    <div
+        class="pointer-events-none absolute inset-y-0 left-6 hidden flex-col items-center justify-center gap-5 xl:flex"
+        aria-hidden="true"
+    >
+        <span class="text-[10px] tracking-[0.3em] text-muted/45">01</span>
+        <span class="h-24 w-px bg-border/70"></span>
+        <span class="-rotate-90 whitespace-nowrap text-[9px] tracking-[0.28em] text-muted/45">
+            BODY MODIFICATION
+        </span>
+        <span class="h-24 w-px bg-border/70"></span>
+    </div>
+
+    <div
+        class="pointer-events-none absolute inset-y-0 right-6 hidden flex-col items-center justify-center gap-5 xl:flex"
+        aria-hidden="true"
+    >
+        <span class="text-[10px] tracking-[0.3em] text-muted/45">02</span>
+        <span class="h-24 w-px bg-border/70"></span>
+        <span class="rotate-90 whitespace-nowrap text-[9px] tracking-[0.28em] text-muted/45">
+            DETAIL / PRECISION
+        </span>
+        <span class="h-24 w-px bg-border/70"></span>
+    </div>
+
+    <section
+        id="galeria"
+        aria-labelledby="gallery-title"
+		class="mx-auto max-w-[96rem] px-4 py-24 sm:px-6 lg:py-32"
+    >
+	<div class="mb-6 flex items-center gap-4">
+		<span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">03 / Galería</span>
+		<span class="h-px w-16 bg-accent/70" aria-hidden="true"></span>
+	</div>
+
+    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+        <h2
+            id="gallery-title"
+            class="shrink-0 font-display text-5xl font-semibold leading-none tracking-tight text-foreground sm:text-6xl"
+        >
+            Galería
+        </h2>
+
+        <span
+            class="h-px w-16 shrink-0 bg-accent/60 sm:h-14 sm:w-px"
+            aria-hidden="true"
+        ></span>
+
+        <p class="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            Una mirada a los detalles, materiales y trabajos que dan forma a cada modificación.
+        </p>
+    </div>
+
+    <div
+        class="relative mt-2 overflow-hidden"
+    >
+        <div
+            class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent"
+        >
+        </div>
+
+        <div
+            class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent"
+        >
+        </div>
+
+        <div id="gallery-viewport" class="gallery-viewport overflow-x-auto px-2 py-4 sm:px-4">
+            <div id="gallery-track" class="flex w-max gap-6">
+                {
+                    loopedGalleryItems.map((item, index) => {
+                        return (
+                            <article
+                                aria-hidden={
+                                    index >= galleryItems.length
+                                        ? "true"
+                                        : undefined
+                                }
+                                class="group relative w-[82vw] shrink-0 overflow-hidden rounded-2xl border border-border bg-surface transition-colors duration-500 hover:border-accent/60 sm:w-[24rem] lg:w-[26rem] xl:w-[28rem]"
+                            >
+                                <button
+                                    type="button"
+                                    data-gallery-trigger
+                                    data-gallery-key={index % galleryItems.length}
+                                    data-gallery-image={item.image.src}
+                                    data-gallery-title={item.title}
+                                    data-gallery-category={item.category}
+                                    class="block w-full cursor-pointer text-left focus-visible:outline-offset-[-4px]"
+                                    aria-label={`Ampliar ${item.title}`}
+                                >
+                                    <div class="relative aspect-[16/10] overflow-hidden bg-surface-hover">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+
+                                        <div class="relative z-10 absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/75 to-transparent px-5 pb-5 pt-16">
+                                            <h3 class="text-lg font-medium text-foreground">
+                                                {item.title}
+                                            </h3>
+                                            <p class="mt-1 text-xs uppercase tracking-[0.18em] text-muted">
+                                                {item.category}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </button>
+                            </article>
+                        );
+                    })
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="relative mt-6 overflow-hidden">
+        <div
+            class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent"
+        ></div>
+
+        <div
+            class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent"
+        ></div>
+
+        <div id="gallery-viewport-reverse" class="gallery-viewport overflow-x-auto px-2 py-4 sm:px-4">
+            <div id="gallery-track-reverse" class="flex w-max gap-6">
+                {
+                    loopedSecondGalleryItems.map((item, index) => {
+                        return (
+                            <article
+                                aria-hidden={
+                                    index >= secondGalleryItems.length
+                                        ? "true"
+                                        : undefined
+                                }
+                                class="group relative w-[82vw] shrink-0 overflow-hidden rounded-2xl border border-border bg-surface transition-colors duration-500 hover:border-accent/60 sm:w-[24rem] lg:w-[26rem] xl:w-[28rem]"
+                            >
+                                <button
+                                    type="button"
+                                    data-gallery-trigger
+                                    data-gallery-key={galleryItems.length + (index % secondGalleryItems.length)}
+                                    data-gallery-image={item.image.src}
+                                    data-gallery-title={item.title}
+                                    data-gallery-category={item.category}
+                                    class="block w-full cursor-pointer text-left focus-visible:outline-offset-[-4px]"
+                                    aria-label={`Ampliar ${item.title}`}
+                                >
+                                    <div class="relative aspect-[16/10] overflow-hidden bg-surface-hover">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+
+                                        <div class="relative z-10 absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/75 to-transparent px-5 pb-5 pt-16">
+                                            <h3 class="text-lg font-medium text-foreground">
+                                                {item.title}
+                                            </h3>
+                                            <p class="mt-1 text-xs uppercase tracking-[0.18em] text-muted">
+                                                {item.category}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </button>
+                            </article>
+                        );
+                    })
+                }
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<dialog
+    id="gallery-lightbox"
+    aria-labelledby="lightbox-title"
+    class="m-auto max-h-[88vh] max-w-4xl overflow-hidden rounded-2xl border border-border bg-background/95 p-0 text-foreground backdrop:bg-black/85 backdrop:backdrop-blur-sm"
+>
+    <div class="relative max-h-[88vh] overflow-hidden bg-background">
+        <button
+            type="button"
+            data-lightbox-close
+            class="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/65 text-lg text-muted backdrop-blur-sm transition-colors hover:border-accent hover:text-foreground focus-visible:outline-offset-4"
+            aria-label="Cerrar imagen ampliada"
+        >
+            <span aria-hidden="true">×</span>
+        </button>
+
+        <button
+            type="button"
+            data-lightbox-prev
+            class="absolute left-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-background/65 text-lg text-muted backdrop-blur-sm transition-colors hover:border-accent hover:text-foreground focus-visible:outline-offset-4"
+            aria-label="Imagen anterior"
+        >
+            <span aria-hidden="true">←</span>
+        </button>
+
+        <img
+            id="lightbox-image"
+            src=""
+            alt=""
+            class="max-h-[68vh] w-auto max-w-[min(90vw,60rem)] object-contain sm:max-h-[72vh]"
+        />
+
+        <button
+            type="button"
+            data-lightbox-next
+            class="absolute right-4 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-background/65 text-lg text-muted backdrop-blur-sm transition-colors hover:border-accent hover:text-foreground focus-visible:outline-offset-4"
+            aria-label="Imagen siguiente"
+        >
+            <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/90 to-transparent px-6 pb-5 pt-20">
+            <h2 id="lightbox-title" class="text-lg font-medium text-foreground"></h2>
+            <p id="lightbox-category" class="mt-1 text-xs uppercase tracking-[0.18em] text-muted"></p>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    const respectsReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const lightbox = document.querySelector("#gallery-lightbox");
+    const lightboxImage = document.querySelector("#lightbox-image");
+    const lightboxTitle = document.querySelector("#lightbox-title");
+    const lightboxCategory = document.querySelector("#lightbox-category");
+    const closeButton = document.querySelector("[data-lightbox-close]");
+    const previousButton = document.querySelector("[data-lightbox-prev]");
+    const nextButton = document.querySelector("[data-lightbox-next]");
+
+    if (
+        !(lightbox instanceof HTMLDialogElement) ||
+        !(lightboxImage instanceof HTMLImageElement) ||
+        !(lightboxTitle instanceof HTMLElement) ||
+        !(lightboxCategory instanceof HTMLElement) ||
+        !(closeButton instanceof HTMLButtonElement) ||
+        !(previousButton instanceof HTMLButtonElement) ||
+        !(nextButton instanceof HTMLButtonElement)
+    ) {
+        throw new Error("No se encontró la estructura del lightbox");
+    }
+
+    const allTriggers = Array.from(
+        document.querySelectorAll("[data-gallery-trigger]"),
+    );
+    const uniqueTriggers = allTriggers.filter(
+        (trigger, index, triggers) =>
+            triggers.findIndex(
+                (item) => item.dataset.galleryKey === trigger.dataset.galleryKey,
+            ) === index,
+    );
+
+    let currentImageIndex = 0;
+    let isLightboxOpen = false;
+    let imageChangeTimeout;
+
+    const updateLightbox = (animate = false) => {
+        const trigger = uniqueTriggers[currentImageIndex];
+
+        if (!trigger) return;
+
+        const renderImage = () => {
+            lightboxImage.src = trigger.dataset.galleryImage || "";
+            lightboxImage.alt = trigger.dataset.galleryTitle || "";
+            lightboxTitle.textContent = trigger.dataset.galleryTitle || "";
+            lightboxCategory.textContent = trigger.dataset.galleryCategory || "";
+        };
+
+        if (!animate || respectsReducedMotion) {
+            renderImage();
+            return;
+        }
+
+        window.clearTimeout(imageChangeTimeout);
+        lightboxImage.classList.add("is-changing");
+
+        imageChangeTimeout = window.setTimeout(() => {
+            renderImage();
+
+            window.requestAnimationFrame(() => {
+                lightboxImage.classList.remove("is-changing");
+            });
+        }, 180);
+    };
+
+    const openLightbox = (trigger) => {
+        const imageKey = trigger.dataset.galleryKey;
+        const imageIndex = uniqueTriggers.findIndex(
+            (item) => item.dataset.galleryKey === imageKey,
+        );
+
+        currentImageIndex = imageIndex >= 0 ? imageIndex : 0;
+        updateLightbox();
+        lightbox.showModal();
+        isLightboxOpen = true;
+        document.body.style.overflow = "hidden";
+        closeButton.focus();
+    };
+
+    const closeLightbox = () => {
+        if (!lightbox.open) return;
+
+        if (respectsReducedMotion) {
+            lightbox.close();
+            return;
+        }
+
+        lightbox.classList.add("is-closing");
+        lightbox.addEventListener(
+            "animationend",
+            () => {
+                lightbox.classList.remove("is-closing");
+                lightbox.close();
+            },
+            { once: true },
+        );
+    };
+
+    const showPreviousImage = () => {
+        currentImageIndex =
+            (currentImageIndex - 1 + uniqueTriggers.length) %
+            uniqueTriggers.length;
+        updateLightbox(true);
+    };
+
+    const showNextImage = () => {
+        currentImageIndex =
+            (currentImageIndex + 1) % uniqueTriggers.length;
+        updateLightbox(true);
+    };
+
+    allTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => openLightbox(trigger));
+    });
+
+    closeButton.addEventListener("click", closeLightbox);
+    previousButton.addEventListener("click", showPreviousImage);
+    nextButton.addEventListener("click", showNextImage);
+
+    lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+    });
+
+    lightbox.addEventListener("cancel", (event) => {
+        event.preventDefault();
+        closeLightbox();
+    });
+
+    lightbox.addEventListener("close", () => {
+        isLightboxOpen = false;
+        document.body.style.overflow = "";
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!lightbox.open) return;
+
+        if (event.key === "ArrowLeft") showPreviousImage();
+        if (event.key === "ArrowRight") showNextImage();
+    });
+
+    const galleryRows = [
+        {
+            viewport: document.querySelector("#gallery-viewport"),
+            track: document.querySelector("#gallery-track"),
+            direction: 1,
+            speed: 0.8,
+        },
+        {
+            viewport: document.querySelector("#gallery-viewport-reverse"),
+            track: document.querySelector("#gallery-track-reverse"),
+            direction: -1,
+            speed: 0.65,
+        },
+    ];
+
+    galleryRows.forEach(({ viewport, track, direction, speed }) => {
+        if (!viewport || !track) {
+            throw new Error("No se encontró la estructura de la galería");
+        }
+
+        if (direction === -1) {
+            viewport.scrollLeft = viewport.scrollWidth / 2;
+        }
+
+        const animateGallery = () => {
+            if (!isLightboxOpen) {
+                viewport.scrollLeft += speed * direction;
+
+                if (direction === 1 && viewport.scrollLeft >= viewport.scrollWidth / 2) {
+                    viewport.scrollLeft = 0;
+                }
+
+                if (direction === -1 && viewport.scrollLeft <= 0) {
+                    viewport.scrollLeft = viewport.scrollWidth / 2;
+                }
+            }
+
+            window.requestAnimationFrame(animateGallery);
+        };
+
+        if (!respectsReducedMotion) {
+            window.requestAnimationFrame(animateGallery);
+        }
+    });
+</script>
+
+<style>
+    .gallery-side-panel {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        display: none;
+        width: calc((100vw - 96rem) / 2);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background:
+            linear-gradient(90deg, rgba(56, 56, 60, 0.12), transparent),
+            radial-gradient(circle at center, rgba(158, 108, 89, 0.08), transparent 68%);
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .gallery-side-panel::after {
+        position: absolute;
+        top: 2rem;
+        bottom: 2rem;
+        width: 9px;
+        background-image: radial-gradient(
+            ellipse at center,
+            color-mix(in srgb, var(--color-muted) 26%, transparent) 0 2px,
+            transparent 2.5px
+        );
+        background-size: 9px 22px;
+        background-repeat: repeat-y;
+        content: "";
+        opacity: 0.65;
+    }
+
+    .gallery-side-panel-left {
+        left: 0;
+        background:
+            linear-gradient(90deg, rgba(56, 56, 60, 0.12), transparent),
+            radial-gradient(circle at center, rgba(158, 108, 89, 0.08), transparent 68%);
+    }
+
+    .gallery-side-panel-left::after {
+        right: 0.75rem;
+    }
+
+    .gallery-side-panel-right {
+        right: 0;
+        background:
+            linear-gradient(270deg, rgba(56, 56, 60, 0.12), transparent),
+            radial-gradient(circle at center, rgba(158, 108, 89, 0.08), transparent 68%);
+    }
+
+    .gallery-side-panel-right::after {
+        left: 0.75rem;
+    }
+
+    .gallery-side-monogram {
+        color: var(--color-foreground);
+        font-family: var(--font-display);
+        font-size: clamp(8rem, 14vw, 16rem);
+        line-height: 0.8;
+        opacity: 0.08;
+        transform: translateY(-2%);
+    }
+
+    .gallery-side-index {
+        position: absolute;
+        bottom: 4rem;
+        color: var(--color-muted);
+        font-size: 9px;
+        letter-spacing: 0.3em;
+        opacity: 0.48;
+        transform: rotate(-90deg);
+        white-space: nowrap;
+    }
+
+    .gallery-side-panel-right .gallery-side-index {
+        transform: rotate(90deg);
+    }
+
+    @media (min-width: 1536px) {
+        .gallery-side-panel {
+            display: flex;
+        }
+    }
+
+    #gallery-lightbox[open] {
+        animation: lightbox-enter 280ms ease-out both;
+    }
+
+    #gallery-lightbox.is-closing {
+        animation: lightbox-exit 220ms ease-in both;
+    }
+
+    #lightbox-image {
+        transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    #lightbox-image.is-changing {
+        opacity: 0;
+        transform: translateX(12px) scale(0.985);
+    }
+
+    @keyframes lightbox-enter {
+        from {
+            opacity: 0;
+            transform: scale(0.97) translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    @keyframes lightbox-exit {
+        from {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: scale(0.98) translateY(6px);
+        }
+    }
+
+    #gallery-lightbox::backdrop {
+        background: radial-gradient(
+                circle at 50% 45%,
+                rgba(158, 108, 89, 0.16),
+                rgba(17, 17, 19, 0.92) 58%
+            );
+        backdrop-filter: blur(10px);
+    }
+
+    .gallery-viewport {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .gallery-viewport::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        #gallery-lightbox[open],
+        #gallery-lightbox.is-closing,
+        #lightbox-image {
+            animation: none;
+            transition: none;
+        }
+    }
+</style>

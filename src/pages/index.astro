@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Gallery from "../components/Gallery.astro";
+import Materials from "../components/Materials.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Daniel | Body Modification">
+	<Header />
+
+	<main id="inicio" class="mx-auto max-w-7xl px-6 py-20">
+		<Materials />
+		<div class="section-divider" aria-hidden="true"></div>
+		<Gallery />
+	</main>
 </Layout>
+
+<style>
+	.section-divider {
+		height: 1px;
+		margin: 0 1rem;
+		background: linear-gradient(90deg, transparent, rgba(56, 56, 60, 0.9) 18%, rgba(158, 108, 89, 0.35) 50%, rgba(56, 56, 60, 0.9) 82%, transparent);
+	}
+</style>

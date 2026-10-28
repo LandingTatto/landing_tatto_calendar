@@ -1,0 +1,212 @@
+---
+const materials = [
+	{ id: "titanium", name: "Titanio grado implante", shortName: "Titanio", category: "Preciso · Confiable", standard: "ASTM F-136", compatibility: "Alta compatibilidad", finish: "Pulido técnico", note: "Ligero · Resistente · Biocompatible" },
+	{ id: "gold", name: "Oro sólido", shortName: "Oro sólido", category: "Noble · Atemporal", standard: "14k / 18k", compatibility: "Material noble", finish: "Brillo cálido", note: "Sin baño · Color estable · Durable" },
+	{ id: "niobium", name: "Niobio", shortName: "Niobio", category: "Técnico · Expresivo", standard: "Niobio puro", compatibility: "Alta compatibilidad", finish: "Anodizado de color", note: "Ligero · Durable · Anodizable" },
+];
+---
+
+<section id="calidad" aria-labelledby="materials-title" class="materials-section mx-auto max-w-[96rem] px-4 py-24 sm:px-6 lg:py-32">
+	<div class="materials-intro" data-reveal>
+		<div>
+			<div class="mb-6 flex items-center gap-4"><span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">02 / Calidad</span><span class="h-px w-16 bg-accent/70" aria-hidden="true"></span></div>
+			<h2 id="materials-title" class="font-display text-5xl font-semibold leading-[0.96] tracking-tight text-foreground sm:text-6xl lg:text-7xl">Trabajamos con calidad.</h2>
+		</div>
+		<span class="materials-separator" aria-hidden="true"></span>
+		<p>Utilizamos materiales de primera calidad, seleccionados por su compatibilidad, resistencia y terminación.</p>
+	</div>
+
+	<div class="passport" data-material-passport data-reveal data-reveal-delay="1">
+		<div class="passport-swatch" data-material-swatch data-material-type="titanium"><div class="swatch-grid" aria-hidden="true"></div><div class="swatch-glow" aria-hidden="true"></div><canvas class="swatch-canvas" data-swatch-canvas aria-label="Muestra 3D del material"></canvas><span class="swatch-index" data-material-index>01 / 03</span><span class="swatch-label">Pasaporte del material</span></div>
+		<div class="passport-details">
+			<div class="material-tabs" role="tablist" aria-label="Materiales disponibles">
+				{materials.map((material, index) => <button id={`material-tab-${material.id}`} type="button" role="tab" aria-selected={index === 0 ? "true" : "false"} aria-controls={`material-panel-${material.id}`} data-material-tab={material.id} class:list={{ "is-active": index === 0 }}><span>0{index + 1}</span>{material.shortName}</button>)}
+			</div>
+			{materials.map((material, index) => <article id={`material-panel-${material.id}`} class="material-panel" data-material-panel={material.id} hidden={index !== 0} role="tabpanel" tabindex="0" aria-labelledby={`material-tab-${material.id}`}><p class="material-category">{material.category}</p><h3>{material.name}</h3><div class="material-specs"><div><span>Estándar</span><strong>{material.standard}</strong></div><div><span>Compatibilidad</span><strong>{material.compatibility}</strong></div><div><span>Acabado</span><strong>{material.finish}</strong></div></div><p class="material-note">{material.note}</p></article>)}
+		</div>
+	</div>
+
+	<div class="finish-tester" data-finish-tester data-reveal data-reveal-delay="2">
+		<div class="finish-copy">
+			<div class="mb-5 flex items-center gap-4"><span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">Acabados</span><span class="h-px w-12 bg-accent/70" aria-hidden="true"></span></div>
+			<h3>Prueba la terminación.</h3>
+			<p>Una misma pieza puede cambiar completamente según cómo se trabaja su superficie.</p>
+		</div>
+		<div class="finish-preview" data-finish-preview data-finish="polished"><span data-finish-label>Pulido espejo</span></div>
+		<div class="finish-progress" aria-hidden="true"><span class="is-active"></span><span></span><span></span></div>
+	</div>
+
+</section>
+
+<script>
+	import * as THREE from "three";
+	import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+	import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+	const passport = document.querySelector("[data-material-passport]");
+	const swatch = passport?.querySelector("[data-material-swatch]");
+	const canvas = passport?.querySelector("[data-swatch-canvas]");
+	if (!(passport instanceof HTMLElement) || !(swatch instanceof HTMLElement) || !(canvas instanceof HTMLCanvasElement)) throw new Error("No se encontró el pasaporte de materiales");
+
+	const scene = new THREE.Scene();
+	const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
+	camera.position.z = 4.8;
+	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+	renderer.outputColorSpace = THREE.SRGBColorSpace;
+	renderer.toneMapping = THREE.ACESFilmicToneMapping;
+	renderer.toneMappingExposure = 1.35;
+	renderer.physicallyCorrectLights = true;
+	const environment = new RoomEnvironment(renderer);
+	const environmentGenerator = new THREE.PMREMGenerator(renderer);
+	scene.environment = environmentGenerator.fromScene(environment, 0.04).texture;
+	environment.dispose();
+	environmentGenerator.dispose();
+	scene.add(new THREE.HemisphereLight(0xffeee5, 0x151518, 2));
+	const key = new THREE.DirectionalLight(0xffe3d0, 4); key.position.set(3, 4, 5); scene.add(key);
+	const rim = new THREE.DirectionalLight(0xb8c8ff, 2.5); rim.position.set(-4, 1, -3); scene.add(rim);
+	const stage = new THREE.Group(); scene.add(stage);
+	let sample;
+	let currentType = "titanium";
+	let dragging = false;
+	let lastX = 0;
+	let lastY = 0;
+	let rotationX = 0.14;
+	let rotationY = 0.35;
+	let velocityX = 0;
+	let velocityY = 0;
+	let targetZoom = 4.8;
+	let interacted = false;
+
+	const createSample = (type) => {
+		let geometry;
+		let material;
+		if (type === "gold") {
+			geometry = new RoundedBoxGeometry(1.9, 0.72, 0.72, 8, 0.18);
+			material = new THREE.MeshPhysicalMaterial({ color: 0xd7a744, metalness: 1, roughness: 0.18, clearcoat: 0.7 });
+		} else if (type === "niobium") {
+			geometry = new RoundedBoxGeometry(1.9, 0.72, 0.72, 8, 0.18);
+			material = new THREE.MeshPhysicalMaterial({ color: 0x65728f, metalness: 0.92, roughness: 0.24, clearcoat: 0.55 });
+		} else {
+			geometry = new RoundedBoxGeometry(1.9, 0.72, 0.72, 8, 0.18);
+			material = new THREE.MeshPhysicalMaterial({ color: 0xd1d5d8, metalness: 0.88, roughness: 0.22, clearcoat: 0.45, clearcoatRoughness: 0.18 });
+		}
+		const mesh = new THREE.Mesh(geometry, material);
+		mesh.rotation.set(0.18, -0.2, 0.12);
+		return mesh;
+	};
+
+	const setSample = (type) => {
+		if (sample) { stage.remove(sample); sample.geometry.dispose(); sample.material.dispose(); }
+		currentType = type;
+		sample = createSample(type);
+		stage.add(sample);
+	};
+	setSample(currentType);
+
+	const resize = () => { const { width, height } = swatch.getBoundingClientRect(); if (!width || !height) return; renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix(); };
+	new ResizeObserver(resize).observe(swatch); resize();
+	canvas.addEventListener("pointerdown", (event) => { dragging = true; lastX = event.clientX; lastY = event.clientY; canvas.setPointerCapture(event.pointerId); });
+	canvas.addEventListener("pointermove", (event) => { if (!dragging) return; const deltaX = event.clientX - lastX; const deltaY = event.clientY - lastY; velocityY = deltaX * 0.012; velocityX = deltaY * 0.008; rotationY += velocityY; rotationX += velocityX; rotationX = Math.max(-1.2, Math.min(1.2, rotationX)); lastX = event.clientX; lastY = event.clientY; interacted = true; });
+	canvas.addEventListener("pointerup", () => { dragging = false; });
+	canvas.addEventListener("pointercancel", () => { dragging = false; });
+	canvas.addEventListener("wheel", (event) => { event.preventDefault(); targetZoom = Math.max(3.8, Math.min(5.8, targetZoom + event.deltaY * 0.012)); interacted = true; }, { passive: false });
+
+	const animate = () => { if (!dragging) { if (Math.abs(velocityX) > 0.0005 || Math.abs(velocityY) > 0.0005) { rotationX += velocityX; rotationY += velocityY; rotationX = Math.max(-1.2, Math.min(1.2, rotationX)); velocityX *= 0.94; velocityY *= 0.94; } else { rotationY += 0.003; } } camera.position.z += (targetZoom - camera.position.z) * 0.08; stage.rotation.set(rotationX, rotationY, 0); renderer.render(scene, camera); requestAnimationFrame(animate); };
+	animate();
+
+	const selectMaterial = (type) => { swatch.dataset.materialType = type; const index = ["titanium", "gold", "niobium"].indexOf(type) + 1; passport.querySelector("[data-material-index]").textContent = `0${index} / 03`; passport.querySelectorAll("[data-material-tab]").forEach((tab) => { tab.classList.toggle("is-active", tab.dataset.materialTab === type); tab.setAttribute("aria-selected", String(tab.dataset.materialTab === type)); }); passport.querySelectorAll("[data-material-panel]").forEach((panel) => { panel.hidden = panel.dataset.materialPanel !== type; }); };
+	const originalSelectMaterial = selectMaterial;
+	const selectMaterialWithSample = (type) => { originalSelectMaterial(type); setSample(type); targetZoom = 4.8; velocityX = 0; velocityY = 0; interacted = false; };
+	passport.querySelectorAll("[data-material-tab]").forEach((tab) => tab.addEventListener("click", () => selectMaterialWithSample(tab.dataset.materialTab)));
+
+	const finishPreview = document.querySelector("[data-finish-preview]");
+	const finishLabel = document.querySelector("[data-finish-label]");
+	const finishProgress = Array.from(document.querySelectorAll(".finish-progress span"));
+	const finishes = [
+		{ id: "polished", label: "Pulido espejo" },
+		{ id: "satin", label: "Satinado técnico" },
+		{ id: "anodized", label: "Anodizado de color" },
+	];
+	let finishIndex = 0;
+	if (finishPreview instanceof HTMLElement && finishLabel instanceof HTMLElement) {
+		window.setInterval(() => {
+			finishIndex = (finishIndex + 1) % finishes.length;
+			const finish = finishes[finishIndex];
+			finishPreview.dataset.finish = finish.id;
+			finishLabel.textContent = finish.label;
+			finishProgress.forEach((dot, index) => dot.classList.toggle("is-active", index === finishIndex));
+		}, 3200);
+	}
+
+	const revealItems = document.querySelectorAll("[data-reveal]");
+	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	if (reducedMotion || !("IntersectionObserver" in window)) {
+		revealItems.forEach((item) => item.classList.add("is-visible"));
+	} else {
+		const revealObserver = new IntersectionObserver((entries, observer) => {
+			entries.forEach((entry) => {
+				if (!entry.isIntersecting) return;
+				entry.target.classList.add("is-visible");
+				observer.unobserve(entry.target);
+			});
+		}, { threshold: 0.16 });
+		revealItems.forEach((item) => revealObserver.observe(item));
+	}
+</script>
+
+<style>
+	.materials-section { position: relative; }
+	[data-reveal] { opacity: 0; transform: translateY(1.25rem); transition: opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
+	[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+	[data-reveal-delay="1"] { transition-delay: 120ms; }
+	[data-reveal-delay="2"] { transition-delay: 220ms; }
+	.materials-section::before { position: absolute; inset: 2rem 0 auto; height: 1px; background: linear-gradient(90deg, transparent, rgba(158, 108, 89, 0.42), transparent); content: ""; }
+	.materials-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(18rem, 0.62fr); align-items: center; gap: 3.5rem; }
+	.materials-intro > p { max-width: 28rem; justify-self: end; color: var(--color-muted); font-size: 1rem; line-height: 1.75; }
+	.materials-separator { display: block; width: 1px; height: 7rem; background: rgba(158, 108, 89, 0.72); }
+	.passport { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(19rem, 0.92fr); gap: 2rem; margin-top: 2rem; }
+	.passport-swatch { position: relative; min-height: 31rem; overflow: hidden; border: 1px solid var(--color-border); border-radius: 1rem; background: #19191d; isolation: isolate; transition: background 500ms ease; }
+	.passport-swatch[data-material-type="gold"] { background: #211b13; }
+	.passport-swatch[data-material-type="niobium"] { background: #171b28; }
+	.swatch-grid { position: absolute; inset: -20%; background-image: linear-gradient(rgba(243, 238, 231, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(243, 238, 231, 0.055) 1px, transparent 1px); background-size: 4rem 4rem; transform: rotate(-12deg) scale(1.2); opacity: 0.5; }
+	.swatch-glow { position: absolute; top: 18%; left: 22%; width: 68%; height: 42%; border-radius: 50%; background: radial-gradient(ellipse, rgba(207, 218, 233, 0.56), rgba(91, 103, 121, 0.14) 32%, transparent 68%); filter: blur(20px); transform: rotate(-18deg); animation: swatch-drift 6s ease-in-out infinite alternate; }
+	.swatch-canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; cursor: grab; }
+	.swatch-canvas:active { cursor: grabbing; }
+	[data-material-type="gold"] .swatch-glow { background: radial-gradient(ellipse, rgba(255, 194, 88, 0.62), rgba(152, 91, 24, 0.16) 36%, transparent 70%); }
+	[data-material-type="niobium"] .swatch-glow { background: radial-gradient(ellipse, rgba(117, 145, 219, 0.7), rgba(67, 88, 157, 0.18) 38%, transparent 70%); }
+	.swatch-index, .swatch-label { position: absolute; z-index: 2; color: rgba(243, 238, 231, 0.65); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; pointer-events: none; }
+	.swatch-index { top: 1.5rem; left: 1.5rem; }
+	.swatch-label { right: 1.5rem; bottom: 1.5rem; }
+	.passport-details { display: flex; min-height: 31rem; flex-direction: column; padding-left: 1rem; }
+	.material-tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; border-bottom: 1px solid var(--color-border); }
+	.material-tabs button { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 0.7rem 1rem; border-bottom: 1px solid transparent; color: var(--color-muted); font-size: 0.8rem; transition: color 180ms ease, border-color 180ms ease; }
+	.material-tabs button span { color: rgba(169, 169, 165, 0.48); font-size: 0.62rem; letter-spacing: 0.12em; }
+	.material-tabs button:hover, .material-tabs button.is-active { border-color: var(--color-accent); color: var(--color-foreground); }
+	.material-panel { padding: 4rem 1.5rem 2rem 0; animation: panel-in 360ms ease both; }
+	.material-category { color: var(--color-accent-hover); font-size: 0.65rem; letter-spacing: 0.24em; text-transform: uppercase; }
+	.material-panel h3 { margin-top: 1rem; font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 4.8rem); font-weight: 600; line-height: 0.94; letter-spacing: -0.04em; color: var(--color-foreground); }
+	.material-specs { display: grid; gap: 1.1rem; margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--color-border); }
+	.material-specs div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; font-size: 0.8rem; }
+	.material-specs span { color: rgba(169, 169, 165, 0.62); }
+	.material-specs strong { color: var(--color-foreground); font-weight: 400; }
+	.material-note { margin-top: 2rem; color: var(--color-muted); font-size: 0.85rem; }
+	.finish-tester { display: grid; grid-template-columns: 0.8fr 1.2fr auto; align-items: center; gap: 2rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
+	.finish-copy h3 { font-family: var(--font-display); font-size: 2rem; line-height: 1; color: var(--color-foreground); }
+	.finish-copy p { max-width: 20rem; margin-top: 0.8rem; color: var(--color-muted); font-size: 0.8rem; line-height: 1.55; }
+	.finish-preview { position: relative; display: flex; min-height: 7rem; align-items: flex-end; justify-content: flex-end; overflow: hidden; padding: 1rem; border: 1px solid var(--color-border); border-radius: 0.75rem; background: radial-gradient(ellipse at 60% 35%, #ffffff, #9da2a8 17%, #454b52 45%, #17191d 75%); transition: background 360ms ease; }
+	.finish-preview::before { position: absolute; inset: -20%; background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.72) 43%, transparent 56%); content: ""; transform: translateX(-25%); transition: transform 600ms ease; }
+	.finish-preview[data-finish="satin"] { background: repeating-linear-gradient(100deg, #5c6269 0 2px, #8e949a 3px, #444a51 5px); }
+	.finish-preview[data-finish="satin"]::before { opacity: 0.25; }
+	.finish-preview[data-finish="anodized"] { background: linear-gradient(115deg, #354a9b, #a84f91 45%, #d6874e 72%, #354a9b); }
+	.finish-preview[data-finish="anodized"]::before { background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.42) 43%, transparent 56%); }
+	.finish-preview span { position: relative; z-index: 1; color: rgba(243, 238, 231, 0.72); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; }
+	.finish-progress { display: flex; align-items: center; gap: 0.4rem; }
+	.finish-progress span { display: block; width: 0.35rem; height: 0.35rem; border-radius: 50%; background: var(--color-border); transition: background-color 220ms ease, transform 220ms ease; }
+	.finish-progress span.is-active { background: var(--color-accent-hover); transform: scale(1.35); }
+	@keyframes swatch-drift { from { transform: translate(-3%, 2%) rotate(-18deg) scale(1); } to { transform: translate(6%, -5%) rotate(-11deg) scale(1.12); } }
+	@keyframes panel-in { from { opacity: 0; transform: translateY(0.4rem); } to { opacity: 1; transform: translateY(0); } }
+	@media (max-width: 900px) { .materials-intro { grid-template-columns: 1fr; gap: 1.5rem; } .materials-intro > p { justify-self: start; } .materials-separator { width: 4rem; height: 1px; } .passport { grid-template-columns: 1fr; } .passport-details { min-height: auto; padding: 0; } .material-panel { padding-top: 3rem; } .finish-tester { grid-template-columns: 1fr auto; } .finish-copy { grid-column: 1 / -1; } }
+	@media (max-width: 640px) { .passport-swatch { min-height: 20rem; } .material-tabs button { flex: 1 1 30%; justify-content: center; font-size: 0.7rem; } .material-tabs button span { display: none; } .material-panel h3 { font-size: 3.2rem; } }
+	@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } .swatch-glow, .material-panel { animation: none; } }
+</style>
