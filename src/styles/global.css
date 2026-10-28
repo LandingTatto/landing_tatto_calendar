@@ -1,4 +1,5 @@
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -16,7 +17,7 @@
   --color-border: #38383c;
 
   --font-sans: "Inter", Arial, sans-serif;
-  --font-display: "Inter", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
 }
 
 :root {
