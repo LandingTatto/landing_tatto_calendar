@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Footer from "../components/Footer.astro";
 
 interface Props {
 	title?: string;
@@ -18,5 +19,6 @@ const { title = "Daniel | Body Modification" } = Astro.props;
 
 	<body>
 		<slot />
+		<Footer />
 	</body>
 </html>

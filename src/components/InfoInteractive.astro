@@ -1,0 +1,294 @@
+---
+const painZones = [
+    {
+        id: "oreja",
+        label: "Oreja",
+        level: 2,
+        feeling: "Molestia leve a moderada",
+        note: "La sensación puede variar según la zona de la oreja y la anatomía de cada persona.",
+    },
+    {
+        id: "nariz",
+        label: "Nariz",
+        level: 3,
+        feeling: "Presión y sensibilidad breve",
+        note: "Es normal sentir lagrimeo o sensibilidad momentánea durante el procedimiento.",
+    },
+    {
+        id: "ceja",
+        label: "Ceja",
+        level: 2,
+        feeling: "Molestia rápida",
+        note: "La sesión suele ser breve, pero la percepción depende de tu sensibilidad personal.",
+    },
+    {
+        id: "labio",
+        label: "Labio",
+        level: 3,
+        feeling: "Presión y sensibilidad",
+        note: "La inflamación inicial puede formar parte del proceso normal de recuperación.",
+    },
+    {
+        id: "ombligo",
+        label: "Ombligo",
+        level: 3,
+        feeling: "Tirón y sensibilidad",
+        note: "La ropa y el movimiento pueden influir en la comodidad durante los primeros días.",
+    },
+];
+
+const defaultZone = painZones[0];
+---
+
+<section
+    id="informacion"
+    aria-labelledby="information-title"
+    class="mx-auto max-w-[96rem] px-4 py-20 sm:px-6 lg:py-28"
+>
+    <div class="mb-6 flex items-center gap-4">
+        <span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">
+            04 / Información
+        </span>
+        <span class="h-px w-16 bg-accent/70" aria-hidden="true"></span>
+    </div>
+
+    <div class="mb-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+        <h2
+            id="information-title"
+            class="shrink-0 font-display text-5xl font-semibold leading-none tracking-tight text-foreground sm:text-6xl"
+        >
+            Antes de tu cita.
+        </h2>
+
+        <span class="h-px w-16 shrink-0 bg-accent/60 sm:h-14 sm:w-px" aria-hidden="true"></span>
+
+        <p class="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            Resuelve dudas y conoce una referencia orientativa de la sensación por zona.
+        </p>
+    </div>
+
+    <div id="information-interactive" class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+            <div class="mb-7 flex items-end justify-between gap-4">
+                <div>
+                    <p class="mb-2 text-[10px] font-medium uppercase tracking-[0.28em] text-accent-hover">
+                        Guía orientativa
+                    </p>
+                    <h3 class="font-display text-3xl text-foreground sm:text-4xl">¿Qué tanto puede molestar?</h3>
+                </div>
+                <span class="hidden text-right text-xs uppercase tracking-[0.18em] text-muted sm:block">
+                    Selecciona una zona
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
+                {
+                    painZones.map((zone, index) => (
+                        <button
+                            type="button"
+                            class="zone-button rounded-xl border border-border px-4 py-4 text-left text-sm text-muted transition-colors hover:border-accent/70 hover:text-foreground"
+                            data-zone={zone.id}
+                            data-selected={index === 0 ? "true" : "false"}
+                            aria-pressed={index === 0 ? "true" : "false"}
+                        >
+                            <span class="zone-icon mb-3 block" aria-hidden="true">
+                                {zone.id === "oreja" && <svg viewBox="0 0 24 24"><path d="M18.2 4.8c-2.2-2.1-5.8-2.2-8.3-.5C7.4 6 6 8.9 6 12.2c0 2.8-1.1 4.1-1.1 5.8 0 1.4 1.1 2.5 2.5 2.5 2.1 0 2.6-2.1 3.4-4.3.6-1.8 1.7-2.4 2.8-3.4 1-.9 1.5-2.1 1.1-3.3-.5-1.4-2.1-1.8-3.2-.9-.8.6-1.1 1.5-1.1 2.4" /></svg>}
+                                {zone.id === "nariz" && <svg viewBox="0 0 24 24"><path d="M12 3v8.5c0 2.7-2.6 4.7-4.8 6.2 1.2 1.7 3.1 2.5 5.3 2.5 2.5 0 4.3-.9 5.3-2.6-1.1-.7-2.1-1.5-2.8-2.4" /></svg>}
+                                {zone.id === "ceja" && <svg viewBox="0 0 24 24"><path d="M4 9.5c2.4-2.2 5.2-3.2 8-3.2s5.6 1 8 3.2M7.5 13.5c1.4-1.2 2.7-1.7 4.5-1.7s3.1.5 4.5 1.7" /><circle cx="12" cy="13.6" r="1.3" /></svg>}
+                                {zone.id === "labio" && <svg viewBox="0 0 24 24"><path d="M3 12c3.2-3.1 6.2-3.2 9 0 2.8-3.2 5.8-3.1 9 0-3 4.9-15 4.9-18 0Z" /><path d="M4.5 12h15" /></svg>}
+                                {zone.id === "ombligo" && <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5" /><path d="M12 7.5c1.2 1.5 1.2 3.1 0 4.5-1.2 1.4-1.2 2.8 0 4.5" /></svg>}
+                            </span>
+                            <span class="mb-2 block text-[10px] uppercase tracking-[0.2em] text-accent-hover">0{index + 1}</span>
+                            <span class="font-medium">{zone.label}</span>
+                        </button>
+                    ))
+                }
+            </div>
+
+            <div class="mt-8 grid gap-6 border-t border-border/70 pt-7 sm:grid-cols-[0.85fr_1.15fr]" aria-live="polite">
+                <div class="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.18em] text-muted">Zona seleccionada</p>
+                        <div class="mt-2 flex items-center gap-3">
+                            <span id="zone-index" class="text-[10px] font-medium uppercase tracking-[0.2em] text-accent-hover">01</span>
+                            <h4 id="zone-name" class="font-display text-4xl text-foreground">{defaultZone.label}</h4>
+                        </div>
+                    </div>
+                    <p id="zone-feeling" class="text-right text-sm text-accent-hover">{defaultZone.feeling}</p>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs uppercase tracking-[0.18em] text-muted">Escala orientativa de molestia</span>
+                        <span id="zone-scale-label" class="text-xs font-medium uppercase tracking-[0.16em] text-accent-hover">Nivel {defaultZone.level} de 5</span>
+                    </div>
+
+                    <div class="mt-4 flex gap-1.5" aria-label={`Nivel ${defaultZone.level} de 5`}>
+                        {
+                            [1, 2, 3, 4, 5].map((level) => (
+                                <span
+                                    class={`scale-step h-2 flex-1 rounded-full ${level <= defaultZone.level ? "bg-accent" : "bg-border"}`}
+                                    data-scale-level={level}
+                                    aria-hidden="true"
+                                ></span>
+                            ))
+                        }
+                    </div>
+
+                    <div class="mt-2 flex justify-between text-[10px] uppercase tracking-[0.16em] text-muted/70">
+                        <span>1 · Leve</span>
+                        <span>5 · Intensa</span>
+                    </div>
+
+                    <p id="zone-note" class="mt-5 max-w-xl text-sm leading-relaxed text-muted">{defaultZone.note}</p>
+                    <p class="mt-5 text-xs leading-relaxed text-muted/70">
+                        Referencia general, no una medida médica. La experiencia cambia según la anatomía, sensibilidad y procedimiento.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p class="mb-5 text-[10px] font-medium uppercase tracking-[0.28em] text-accent-hover">Preguntas frecuentes</p>
+
+            <div class="space-y-3">
+                <details class="group rounded-xl border border-border bg-surface px-5 py-4">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
+                        ¿La molestia dura mucho tiempo?
+                        <span class="text-xl font-light text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    </summary>
+                    <p class="pt-4 text-sm leading-relaxed text-muted">
+                        La sensación inicial suele disminuir, pero cada cuerpo responde de manera diferente. Te explicaremos los cuidados específicos de tu procedimiento.
+                    </p>
+                </details>
+
+                <details class="group rounded-xl border border-border bg-surface px-5 py-4">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
+                        ¿Qué debo hacer antes de venir?
+                        <span class="text-xl font-light text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    </summary>
+                    <p class="pt-4 text-sm leading-relaxed text-muted">
+                        Ven descansado, con tiempo y con la zona limpia. Si tienes dudas sobre tu salud o una condición específica, coméntala antes de agendar.
+                    </p>
+                </details>
+
+                <details class="group rounded-xl border border-border bg-surface px-5 py-4">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
+                        ¿Puedo cambiar mi joyería después?
+                        <span class="text-xl font-light text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    </summary>
+                    <p class="pt-4 text-sm leading-relaxed text-muted">
+                        El cambio depende del procedimiento y de su recuperación. Lo recomendable es esperar la indicación profesional antes de reemplazarla.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const interactiveInfo = document.querySelector<HTMLElement>("#information-interactive");
+
+    if (interactiveInfo) {
+        const zones = {
+            oreja: {
+                label: "Oreja",
+                index: "01",
+                feeling: "Molestia leve a moderada",
+                level: 2,
+                note: "La sensación puede variar según la zona de la oreja y la anatomía de cada persona.",
+            },
+            nariz: {
+                label: "Nariz",
+                index: "02",
+                feeling: "Presión y sensibilidad breve",
+                level: 3,
+                note: "Es normal sentir lagrimeo o sensibilidad momentánea durante el procedimiento.",
+            },
+            ceja: {
+                label: "Ceja",
+                index: "03",
+                feeling: "Molestia rápida",
+                level: 2,
+                note: "La sesión suele ser breve, pero la percepción depende de tu sensibilidad personal.",
+            },
+            labio: {
+                label: "Labio",
+                index: "04",
+                feeling: "Presión y sensibilidad",
+                level: 3,
+                note: "La inflamación inicial puede formar parte del proceso normal de recuperación.",
+            },
+            ombligo: {
+                label: "Ombligo",
+                index: "05",
+                feeling: "Tirón y sensibilidad",
+                level: 3,
+                note: "La ropa y el movimiento pueden influir en la comodidad durante los primeros días.",
+            },
+        };
+
+        const buttons = interactiveInfo.querySelectorAll<HTMLButtonElement>("[data-zone]");
+        const zoneName = interactiveInfo.querySelector<HTMLElement>("#zone-name");
+        const zoneIndex = interactiveInfo.querySelector<HTMLElement>("#zone-index");
+        const zoneFeeling = interactiveInfo.querySelector<HTMLElement>("#zone-feeling");
+        const zoneNote = interactiveInfo.querySelector<HTMLElement>("#zone-note");
+        const zoneScaleLabel = interactiveInfo.querySelector<HTMLElement>("#zone-scale-label");
+        const scaleSteps = interactiveInfo.querySelectorAll<HTMLElement>("[data-scale-level]");
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const zone = zones[button.dataset.zone as keyof typeof zones];
+                if (!zone || !zoneName || !zoneIndex || !zoneFeeling || !zoneNote || !zoneScaleLabel) return;
+
+                buttons.forEach((item) => {
+                    const selected = item === button;
+                    item.dataset.selected = String(selected);
+                    item.setAttribute("aria-pressed", String(selected));
+                });
+
+                zoneName.textContent = zone.label;
+                zoneIndex.textContent = zone.index;
+                zoneFeeling.textContent = zone.feeling;
+                zoneNote.textContent = zone.note;
+                zoneScaleLabel.textContent = `Nivel ${zone.level} de 5`;
+
+                scaleSteps.forEach((step) => {
+                    const level = Number(step.dataset.scaleLevel);
+                    step.classList.toggle("bg-accent", level <= zone.level);
+                    step.classList.toggle("bg-border", level > zone.level);
+                });
+            });
+        });
+    }
+</script>
+
+<style>
+    .zone-button[data-selected="true"] {
+        border-color: rgba(184, 133, 112, 0.85);
+        background: rgba(158, 108, 89, 0.14);
+        color: var(--color-foreground);
+    }
+
+    .zone-icon {
+        color: var(--color-accent-hover);
+    }
+
+    .zone-icon svg {
+        display: block;
+        width: 1.8rem;
+        height: 1.8rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.25;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .zone-button,
+        details span {
+            transition: none;
+        }
+    }
+</style>
