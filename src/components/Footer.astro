@@ -1,0 +1,75 @@
+---
+const bookingUrl = "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3dMF0eCPdqKP_fhAwTaK2TNZYiJsWJ-mkSOnlppVkJkm68R_xTWSZAqTHEYzm6KphgZ_1A-68M?gv=true";
+const instagramUrl = "https://instagram.com/tu_usuario";
+const whatsappUrl = "https://wa.me/56900000000";
+const email = "hola@danielbodymodification.cl";
+---
+
+<footer class="border-t border-border/80 bg-background">
+    <div class="mx-auto grid max-w-7xl gap-12 px-6 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr] lg:px-8">
+        <div>
+            <a
+                href="/#inicio"
+                class="inline-block rounded-sm focus-visible:outline-offset-4"
+                aria-label="Daniel Body Modification, inicio"
+            >
+                <span class="block text-[1.35rem] font-semibold leading-none tracking-[0.2em] text-foreground">
+                    DANIEL
+                </span>
+                <span class="mt-1 block text-[9px] font-medium leading-none tracking-[0.28em] text-muted">
+                    BODY MODIFICATION
+                </span>
+            </a>
+
+            <p class="mt-6 max-w-sm text-sm leading-relaxed text-muted">
+                Piercings y modificaciones corporales trabajadas con precisión, identidad y materiales de primera calidad.
+            </p>
+        </div>
+
+        <div>
+            <p class="mb-5 text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">
+                Explora
+            </p>
+
+            <nav aria-label="Navegación del pie de página">
+                <ul class="space-y-3 text-sm text-muted">
+                    <li><a class="transition-colors hover:text-foreground" href="/#inicio">Inicio</a></li>
+                    <li><a class="transition-colors hover:text-foreground" href="/#calidad">Calidad</a></li>
+                    <li><a class="transition-colors hover:text-foreground" href="/#galeria">Galería</a></li>
+                    <li><a class="transition-colors hover:text-foreground" href={bookingUrl} target="_blank" rel="noopener noreferrer">Reservar una cita</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div>
+            <p class="mb-5 text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">
+                Contacto
+            </p>
+
+            <ul class="space-y-3 text-sm text-muted">
+                <li>
+                    <a class="transition-colors hover:text-foreground" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+                        Instagram
+                    </a>
+                </li>
+                <li>
+                    <a class="transition-colors hover:text-foreground" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        WhatsApp
+                    </a>
+                </li>
+                <li>
+                    <a class="transition-colors hover:text-foreground" href={`mailto:${email}`}>
+                        {email}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border-t border-border/60">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-5 text-[10px] uppercase tracking-[0.18em] text-muted sm:flex-row sm:items-center sm:justify-between lg:px-8">
+            <p>© {new Date().getFullYear()} Daniel Body Modification</p>
+            <p>Precisión / Forma / Material</p>
+        </div>
+    </div>
+</footer>
