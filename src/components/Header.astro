@@ -3,8 +3,20 @@ const navLinks = [
     { label: "Inicio", href: "/#inicio" },
 	{ label: "Calidad", href: "/#calidad" },
 	{ label: "Galería", href: "/#galeria" },
+	{ label: "Información", href: "/#informacion" },
 ];
+
 ---
+
+<link
+    href="https://calendar.google.com/calendar/scheduling-button-script.css"
+    rel="stylesheet"
+/>
+<script
+    is:inline
+    src="https://calendar.google.com/calendar/scheduling-button-script.js"
+    async
+></script>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/80 bg-background/90 backdrop-blur-md">
     <nav
@@ -42,21 +54,26 @@ const navLinks = [
         </ul>
 
         <div class="flex items-center gap-3">
-            <a
-                href="/#agendar"
-                class="hidden min-h-11 items-center rounded-xl bg-accent px-3 text-xs font-medium text-foreground transition-colors duration-200 hover:bg-accent-hover focus-visible:outline-offset-4 min-[381px]:inline-flex md:hidden"
-            >
-				<svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.27c0-.79-.07-1.55-.23-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.15c1.85-1.7 2.9-4.2 2.9-7.42Z"/><path fill="#34A853" d="M12 21.5c2.65 0 4.87-.88 6.5-2.38l-3.15-2.45c-.88.59-2 1-3.35 1-2.57 0-4.75-1.74-5.53-4.08H3.22v2.53A9.82 9.82 0 0 0 12 21.5Z"/><path fill="#FBBC05" d="M6.47 13.59A5.9 5.9 0 0 1 6.16 12c0-.55.1-1.09.31-1.59V7.88H3.22A9.82 9.82 0 0 0 2.5 12c0 1.58.38 3.08 1.04 4.41l2.93-2.82Z"/><path fill="#EA4335" d="M12 6.33c1.45 0 2.75.5 3.78 1.48l2.83-2.83C16.87 3.38 14.65 2.5 12 2.5a9.82 9.82 0 0 0-8.78 5.38l3.25 2.53C7.25 8.07 9.43 6.33 12 6.33Z"/></svg>
-                Agendar
-            </a>
+            <span class="hidden items-center rounded-sm border border-accent/60 bg-accent/10 px-3 py-2 text-right text-[10px] font-semibold uppercase leading-tight tracking-[0.14em] text-accent-hover md:flex">
+                Abono del 50%<br />para confirmar la hora
+            </span>
 
-            <a
-                href="/#agendar"
-                class="hidden min-h-11 items-center rounded-sm bg-accent px-5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-accent-hover focus-visible:outline-offset-4 md:inline-flex"
-            >
-				<svg class="mr-2 h-[18px] w-[18px]" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.27c0-.79-.07-1.55-.23-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.15c1.85-1.7 2.9-4.2 2.9-7.42Z"/><path fill="#34A853" d="M12 21.5c2.65 0 4.87-.88 6.5-2.38l-3.15-2.45c-.88.59-2 1-3.35 1-2.57 0-4.75-1.74-5.53-4.08H3.22v2.53A9.82 9.82 0 0 0 12 21.5Z"/><path fill="#FBBC05" d="M6.47 13.59A5.9 5.9 0 0 1 6.16 12c0-.55.1-1.09.31-1.59V7.88H3.22A9.82 9.82 0 0 0 2.5 12c0 1.58.38 3.08 1.04 4.41l2.93-2.82Z"/><path fill="#EA4335" d="M12 6.33c1.45 0 2.75.5 3.78 1.48l2.83-2.83C16.87 3.38 14.65 2.5 12 2.5a9.82 9.82 0 0 0-8.78 5.38l3.25 2.53C7.25 8.07 9.43 6.33 12 6.33Z"/></svg>
-                Agendar cita
-            </a>
+            <div class="hidden min-[381px]:block">
+                <script is:inline>
+                    (() => {
+                        const target = document.currentScript;
+
+                        window.addEventListener("load", () => {
+                            calendar.schedulingButton.load({
+                                url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3dMF0eCPdqKP_fhAwTaK2TNZYiJsWJ-mkSOnlppVkJkm68R_xTWSZAqTHEYzm6KphgZ_1A-68M?gv=true",
+                                color: "#F09300",
+                                label: "Reservar una cita",
+                                target,
+                            });
+                        });
+                    })();
+                </script>
+            </div>
 
             <details id="mobile-menu" class="relative md:hidden">
                 <summary
