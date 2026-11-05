@@ -9,6 +9,10 @@ const navLinks = [
 	{ label: "Privacidad", href: "/privacidad" },
 ];
 
+// En móvil usamos navegación directa porque el modal de Google Calendar no
+// permite controlar bien su layout responsive desde nuestra landing.
+const bookingUrl = "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3dMF0eCPdqKP_fhAwTaK2TNZYiJsWJ-mkSOnlppVkJkm68R_xTWSZAqTHEYzm6KphgZ_1A-68M?gv=true";
+
 ---
 
 <!-- Google Calendar aporta el botón oficial y el modal de reserva. -->
@@ -33,11 +37,11 @@ const navLinks = [
             class="group shrink-0 rounded-sm focus-visible:outline-offset-4"
             aria-label="Daniel Body Modification, inicio"
         >
-            <span class="block text-[1.35rem] font-semibold leading-none tracking-[0.2em] text-foreground transition-colors duration-200 group-hover:text-accent-hover">
+                <span class="block text-[1.15rem] font-semibold leading-none tracking-[0.18em] text-foreground transition-colors duration-200 group-hover:text-accent-hover sm:text-[1.35rem] sm:tracking-[0.2em]">
                 DANIEL
             </span>
 
-            <span class="mt-1 block text-[9px] font-medium leading-none tracking-[0.28em] text-muted transition-colors duration-200 group-hover:text-foreground">
+                <span class="mt-1 block text-[8px] font-medium leading-none tracking-[0.22em] text-muted transition-colors duration-200 group-hover:text-foreground sm:text-[9px] sm:tracking-[0.28em]">
                 BODY MODIFICATION
             </span>
         </a>
@@ -64,7 +68,8 @@ const navLinks = [
             </span>
 
             <!-- En pantallas muy pequeñas se oculta el botón para evitar overflow. -->
-            <div class="hidden min-[381px]:block">
+            <!-- En desktop mantenemos el botón oficial con modal de Google. -->
+            <div class="calendar-button hidden md:block">
                 <script is:inline>
                     (() => {
                         const target = document.currentScript;
@@ -80,6 +85,17 @@ const navLinks = [
                     })();
                 </script>
             </div>
+
+            <!-- En móvil Google Calendar se abre como página completa, evitando
+                 el modal estrecho que no podemos estilizar desde este dominio. -->
+            <a
+                class="mobile-booking-button rounded-md bg-accent px-3 py-3 text-center text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-black transition-colors hover:bg-accent-hover focus-visible:outline-offset-4 md:hidden"
+                href={bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Reservar<br />una cita
+            </a>
 
             <!-- details/summary permite un menú móvil accesible sin depender de un framework. -->
             <details id="mobile-menu" class="relative md:hidden">
@@ -173,12 +189,24 @@ const navLinks = [
     }
 
     .menu-icon__line {
+        /* Separación necesaria para que el estado cerrado se lea como menú. */
+        margin-block: 0.16rem;
         transition: transform 200ms ease, opacity 200ms ease;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .menu-icon__line {
             transition: none;
+        }
+    }
+
+    /* El botón oficial de Google tiene un tamaño generoso en desktop; este
+       ajuste evita que domine el header cuando el viewport aún es reducido. */
+    @media (min-width: 640px) and (max-width: 767px) {
+        .calendar-button {
+            transform: scale(0.88);
+            transform-origin: right center;
+            margin-left: -0.35rem;
         }
     }
 </style>
