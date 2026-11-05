@@ -1,4 +1,6 @@
 ---
+// La home es un ensamblador: importa cada sección y define su orden vertical.
+// La lógica de cada sección permanece encapsulada en su propio componente.
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
@@ -8,9 +10,11 @@ import InfoInteractive from "../components/InfoInteractive.astro";
 ---
 
 <Layout title="Daniel | Body Modification">
+	<!-- Header queda fuera del contenedor principal para ocupar todo el ancho. -->
 	<Header />
 
 	<main class="mx-auto max-w-7xl px-6">
+		<!-- Cada divisor separa visualmente las grandes áreas de la landing. -->
 		<Hero />
 		<div class="section-divider" aria-hidden="true"></div>
 		<Materials />

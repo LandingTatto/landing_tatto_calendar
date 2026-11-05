@@ -1,4 +1,6 @@
 ---
+// Layout compartido por todas las páginas. El contenido concreto llega mediante
+// <slot /> desde cada archivo ubicado en src/pages/.
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 
@@ -6,6 +8,8 @@ interface Props {
 	title?: string;
 }
 
+// Cada página puede sobreescribir el título del documento; si no lo hace,
+// usamos el nombre general de la marca.
 const { title = "Daniel | Body Modification" } = Astro.props;
 ---
 
@@ -18,6 +22,7 @@ const { title = "Daniel | Body Modification" } = Astro.props;
 	</head>
 
 	<body>
+		<!-- El layout envuelve el contenido de la página y añade el footer común. -->
 		<slot />
 		<Footer />
 	</body>

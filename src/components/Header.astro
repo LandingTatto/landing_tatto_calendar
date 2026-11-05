@@ -1,4 +1,6 @@
 ---
+// Enlaces internos de la navegación. Los anchors apuntan a IDs de las secciones
+// de la home; Privacidad es la única ruta independiente.
 const navLinks = [
     { label: "Inicio", href: "/#inicio" },
 	{ label: "Calidad", href: "/#calidad" },
@@ -9,6 +11,7 @@ const navLinks = [
 
 ---
 
+<!-- Google Calendar aporta el botón oficial y el modal de reserva. -->
 <link
     href="https://calendar.google.com/calendar/scheduling-button-script.css"
     rel="stylesheet"
@@ -20,6 +23,7 @@ const navLinks = [
 ></script>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/80 bg-background/90 backdrop-blur-md">
+	<!-- La barra permanece visible mientras el visitante recorre la landing. -->
     <nav
         aria-label="Navegación principal"
         class="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-6"
@@ -59,6 +63,7 @@ const navLinks = [
                 Abono del 50%<br />para confirmar la hora
             </span>
 
+            <!-- En pantallas muy pequeñas se oculta el botón para evitar overflow. -->
             <div class="hidden min-[381px]:block">
                 <script is:inline>
                     (() => {
@@ -76,6 +81,7 @@ const navLinks = [
                 </script>
             </div>
 
+            <!-- details/summary permite un menú móvil accesible sin depender de un framework. -->
             <details id="mobile-menu" class="relative md:hidden">
                 <summary
                     class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-border text-muted transition-colors duration-200 hover:border-accent hover:text-foreground focus-visible:outline-offset-4 [&::-webkit-details-marker]:hidden"
@@ -114,6 +120,8 @@ const navLinks = [
 </header>
 
 <script>
+    // Sincroniza el estado nativo de <details> con atributos ARIA y las clases
+    // que convierten las tres líneas del icono en una X.
     const mobileMenu = document.querySelector<HTMLDetailsElement>("#mobile-menu");
 
     if (mobileMenu) {
@@ -139,6 +147,7 @@ const navLinks = [
             });
         });
 
+        // Cerrar el menú al hacer clic fuera de él mejora la navegación móvil.
         document.addEventListener("click", (event) => {
             if (mobileMenu.open && !mobileMenu.contains(event.target as Node)) {
                 mobileMenu.open = false;
@@ -150,6 +159,7 @@ const navLinks = [
 </script>
 
 <style>
+    /* Estado visual del icono hamburguesa cuando el menú está abierto. */
     #mobile-menu[data-open="true"] .menu-icon__line:first-child {
         transform: rotate(45deg);
     }
