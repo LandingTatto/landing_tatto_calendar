@@ -1,4 +1,5 @@
 ---
+// Las imágenes viven en src/assets para que Astro pueda optimizarlas durante el build.
 import { Image } from "astro:assets";
 import heroFace from "../assets/hero/hero-face.png";
 import heroEar from "../assets/hero/hero-ear.png";
@@ -6,6 +7,7 @@ import heroJewelry from "../assets/hero/hero-jewelry.png";
 ---
 
 <section id="inicio" aria-labelledby="hero-title" class="hero-section mx-auto grid max-w-[96rem] gap-12 px-4 pb-10 pt-10 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-20 lg:pb-14 lg:pt-14">
+	<!-- Texto principal de la marca; el <em> recibe el color de acento mediante CSS. -->
 	<div class="hero-copy">
 		<div class="mb-7 flex items-center gap-4">
 			<span class="text-[10px] font-medium uppercase tracking-[0.32em] text-accent-hover">Body modification / Santiago</span>
@@ -16,6 +18,7 @@ import heroJewelry from "../assets/hero/hero-jewelry.png";
 		<p class="mt-8 max-w-md text-base leading-relaxed text-muted sm:text-lg">Piercings y modificaciones corporales trabajadas con precisión, identidad y materiales de primera calidad.</p>
 	</div>
 
+	<!-- Composición editorial de tres imágenes, posicionadas con CSS. -->
 	<div class="hero-visual" aria-label="Selección de trabajos de body modification">
 		<div class="hero-visual__main">
 			<Image src={heroFace} alt="Detalle editorial de piercing corporal" class="h-full w-full object-cover" />
@@ -32,6 +35,7 @@ import heroJewelry from "../assets/hero/hero-jewelry.png";
 </section>
 
 <style>
+	/* CSS local para la composición superpuesta y el movimiento sutil de las imágenes. */
 	.hero-section { position: relative; }
 	.hero-copy { position: relative; z-index: 2; }
 	.hero-copy em { color: var(--color-accent-hover); font-style: normal; }

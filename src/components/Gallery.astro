@@ -1,4 +1,6 @@
 ---
+// Cada item contiene el texto que se muestra en la tarjeta y la imagen importada
+// desde src/assets/gallery. Para añadir una pieza nueva, basta con editar estos arrays.
 import { Image } from "astro:assets";
 
 import earPiercing from "../assets/gallery/ear-piercing.png";
@@ -26,6 +28,8 @@ const galleryItems = [
     },
 ];
 
+// Duplicamos las filas para que el scroll automático pueda volver al inicio sin
+// mostrar un salto visual cuando llega a la mitad del contenido.
 const loopedGalleryItems = [...galleryItems, ...galleryItems];
 
 const secondGalleryItems = [
@@ -50,6 +54,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
 ---
 
 <div class="relative">
+	<!-- Decoración lateral visible solo en pantallas muy grandes. -->
     <div
         class="gallery-side-panel gallery-side-panel-left"
         aria-hidden="true"
@@ -90,6 +95,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
         <span class="h-24 w-px bg-border/70"></span>
     </div>
 
+    <!-- Las dos filas tienen direcciones opuestas y se animan desde el script. -->
     <section
         id="galeria"
         aria-labelledby="gallery-title"
@@ -238,6 +244,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
 </section>
 </div>
 
+<!-- El diálogo nativo contiene la vista ampliada y sus controles de navegación. -->
 <dialog
     id="gallery-lightbox"
     aria-labelledby="lightbox-title"
@@ -286,6 +293,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
 </dialog>
 
 <script>
+    // El lightbox usa <dialog> para obtener foco, Escape y backdrop nativos.
     const respectsReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -324,6 +332,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
     let isLightboxOpen = false;
     let imageChangeTimeout;
 
+    // Copia en el diálogo los datos guardados en el botón seleccionado.
     const updateLightbox = (animate = false) => {
         const trigger = uniqueTriggers[currentImageIndex];
 
@@ -353,6 +362,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
         }, 180);
     };
 
+    // Abre el modal, bloquea el scroll de fondo y enfoca el botón de cierre.
     const openLightbox = (trigger) => {
         const imageKey = trigger.dataset.galleryKey;
         const imageIndex = uniqueTriggers.findIndex(
@@ -367,6 +377,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
         closeButton.focus();
     };
 
+    // Cierra con una animación respetando prefers-reduced-motion.
     const closeLightbox = () => {
         if (!lightbox.open) return;
 
@@ -428,6 +439,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
         if (event.key === "ArrowRight") showNextImage();
     });
 
+    // Cada fila avanza por scrollLeft. La segunda usa dirección negativa.
     const galleryRows = [
         {
             viewport: document.querySelector("#gallery-viewport"),
@@ -475,6 +487,7 @@ const loopedSecondGalleryItems = [...secondGalleryItems, ...secondGalleryItems];
 </script>
 
 <style>
+    /* Estilos de la decoración lateral, lightbox y animaciones de transición. */
     .gallery-side-panel {
         position: absolute;
         top: 0;

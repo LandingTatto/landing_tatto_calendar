@@ -1,4 +1,6 @@
 ---
+// Contenido editable de la guía. `level` solo es una referencia comunicacional,
+// no una medición médica ni una recomendación clínica.
 const painZones = [
     {
         id: "oreja",
@@ -40,6 +42,7 @@ const painZones = [
 const defaultZone = painZones[0];
 ---
 
+<!-- La sección combina un selector de zonas con preguntas frecuentes nativas. -->
 <section
     id="informacion"
     aria-labelledby="information-title"
@@ -81,6 +84,7 @@ const defaultZone = painZones[0];
                 </span>
             </div>
 
+            <!-- Los botones se generan desde painZones para mantener datos y UI sincronizados. -->
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
                 {
                     painZones.map((zone, index) => (
@@ -187,6 +191,8 @@ const defaultZone = painZones[0];
 </section>
 
 <script>
+    // La misma información se replica en el navegador para poder actualizar la
+    // interfaz sin recargar la página ni depender de un framework.
     const interactiveInfo = document.querySelector<HTMLElement>("#information-interactive");
 
     if (interactiveInfo) {
@@ -236,6 +242,7 @@ const defaultZone = painZones[0];
         const zoneScaleLabel = interactiveInfo.querySelector<HTMLElement>("#zone-scale-label");
         const scaleSteps = interactiveInfo.querySelectorAll<HTMLElement>("[data-scale-level]");
 
+        // Cada clic actualiza selección, texto descriptivo y barras de nivel.
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
                 const zone = zones[button.dataset.zone as keyof typeof zones];
@@ -264,6 +271,7 @@ const defaultZone = painZones[0];
 </script>
 
 <style>
+    /* Estado visual del botón seleccionado y estilos de los iconos SVG inline. */
     .zone-button[data-selected="true"] {
         border-color: rgba(184, 133, 112, 0.85);
         background: rgba(158, 108, 89, 0.14);

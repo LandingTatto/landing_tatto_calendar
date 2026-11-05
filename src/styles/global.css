@@ -1,7 +1,9 @@
 
+/* Tipografía editorial externa usada en títulos y elementos display. */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap");
 @import "tailwindcss";
 
+/* Tokens de diseño disponibles como clases de Tailwind y variables CSS. */
 @theme {
 
   --color-background: #111113;
@@ -21,6 +23,7 @@
 }
 
 :root {
+  /* La interfaz está diseñada para una apariencia oscura. */
   color-scheme: dark;
 }
 
@@ -29,6 +32,7 @@ html {
 }
 
 body {
+  /* Inter se usa como tipografía funcional; Playfair se reserva para títulos. */
   min-height: 100vh;
   margin: 0;
   background-color: var(--color-background);
@@ -43,6 +47,7 @@ body {
 }
 
 :focus-visible {
+  /* Indicador de foco visible para navegación con teclado. */
   outline: 2px solid var(--color-accent-hover);
   outline-offset: 3px;
 }
